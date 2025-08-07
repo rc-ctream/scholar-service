@@ -1,0 +1,37 @@
+openapi: 3.0.3
+info:
+  title: CTREAM scholar API
+  version: 1.0.0
+tags:
+  - name: profiles
+    description: 'Profile - RESTful Endpoints'
+security:
+  - bearerAuth: [ ]
+paths:
+  /api/v1/profiles:
+    get:
+      tags:
+        - profiles
+      summary: Get profile data about current user
+      operationId: getProfileOfCurrentUser
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        500:
+          description: Internal error - Any unexpected internal server occurred
+components:
+  schemas:
+    UserProfile:
+      type: object
+      properties:
+        userId:
+          type: string
+          format: uuid
+        username:
+          type: string
+        role:
+          type: string

@@ -1,0 +1,202 @@
+openapi: 3.0.3
+info:
+  title: CTREAM scholar conversation API
+  version: 1.0.0
+tags:
+  - name: conversations
+    description: 'Conversation - RESTful Endpoints'
+security:
+  - bearerAuth: [ ]
+paths:
+  /api/v1/conversations:
+    get:
+      tags:
+        - conversations
+      summary: Get all existing conversations for the current user
+      operationId: getAllConversations
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ConversationOverViewWrapper"
+        500:
+          description: Internal error - Any unexpected internal server occurred
+    post:
+      tags:
+        - conversations
+      summary: Create a new conversation
+      operationId: createNewConversation
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConversationIdResponse"
+  /api/v1/conversations/{conversationId}:
+    get:
+      tags:
+        - conversations
+      summary: Return single conversation by given id
+      operationId: getSingleConversation
+      parameters:
+        - in: path
+          name: conversationId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConversationDetail"
+        404:
+          description: Not found
+  /api/v1/conversations/{conversationId}/messages:
+    patch:
+      tags:
+        - conversations
+      summary: Append single message to existing conversation
+      operationId: appendSingleMessage
+      parameters:
+        - in: path
+          name: conversationId
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ConversationMessageRequest"
+      responses:
+        200:
+          description: Successful operation
+        404:
+          description: Not found
+        500:
+          description: Internal server error
+  /api/v1/conversations/analytics:
+    get:
+      tags:
+        - conversations
+      operationId: getAnalytics
+      summary: Get all analytics of conversations
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: "#/components/schemas/ConversationAnalytics"
+        500:
+          description: Internal server error
+
+
+components:
+  schemas:
+    ConversationIdResponse:
+      type: object
+      properties:
+        title:
+          type: string
+        conversationId:
+          type: string
+          format: uuid
+        created:
+          type: string
+          format: date-time
+    ConversationAnalytics:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        conversationCount:
+          type: integer
+        averageMessages:
+          type: integer
+        messageOfUserCount:
+          type: integer
+        messageOfBotCount:
+          type: integer
+    MessageAuthor:
+      type: string
+      enum: [ USER,BOT ]
+    ConversationMessageRequest:
+      type: object
+      properties:
+        author:
+          $ref: "#/components/schemas/MessageAuthor"
+        content:
+          type: string
+    ConversationMessage:
+      type: object
+      properties:
+        messageId:
+          type: string
+          format: uuid
+        content:
+          type: string
+        author:
+          $ref: "#/components/schemas/MessageAuthor"
+        created:
+          type: string
+          format: date-time
+        finished:
+          type: string
+          format: date-time
+    ConversationDetail:
+      type: object
+      properties:
+        conversationId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        messages:
+          items:
+            $ref: "#/components/schemas/ConversationMessage"
+        created:
+          type: string
+          format: date-time
+        updated:
+          type: string
+          format: date-time
+        finished:
+          type: string
+          format: date-time
+    ConversationOverview:
+      type: object
+      properties:
+        conversationId:
+          type: string
+          format: uuid
+        title:
+          type: string
+        messagesLength:
+          type: integer
+        created:
+          type: string
+          format: date-time
+        finished:
+          type: string
+          format: date-time
+    ConversationOverViewWrapper:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        conversations:
+          items:
+            $ref: "#/components/schemas/ConversationOverview"
+

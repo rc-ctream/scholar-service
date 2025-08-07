@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: schoolar
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: https://ctream.eu.auth0.com/
+          jwk-set-uri: https://ctream.eu.auth0.com/.well-known/jwks.json
