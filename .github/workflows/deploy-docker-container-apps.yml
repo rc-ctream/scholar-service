@@ -21,7 +21,7 @@ jobs:
         run: | 
           echo "ISSUER_URI: ${{ env.OAUTH_ISSUER_URI }}"
           echo "AUDIENCE: ${{ vars.OAUTH_ISSUER_URI }}"
-          echo "variable from shell environment : $env_var"
+          echo "variable from shell environment : $ENV_VAR"
 
   build-and-deploy:
     runs-on: ubuntu-latest
