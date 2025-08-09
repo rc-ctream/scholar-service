@@ -11,6 +11,14 @@ env:
   RESOURCE_GROUP: Schoolar
 
 jobs:
+  greeting-job:
+    runs-on: ubuntu-latest
+    name: Welcome to the job
+    steps:
+      - name: Print environment variables
+        run: | 
+          echo "ISSUER_URI: ${{ env.OAUTH_ISSUER_URI }}"
+
   build-and-deploy:
     runs-on: ubuntu-latest
 
