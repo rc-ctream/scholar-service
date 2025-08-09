@@ -9,6 +9,7 @@ env:
   AZURE_CONTAINER_REGISTRY: scholarservice
   CONTAINER_APP_NAME: hello
   RESOURCE_GROUP: Schoolar
+  OAUTH_ISSUER_URI: ${{vars.OAUTH_ISSUER_URI}}
 
 jobs:
   greeting-job:
@@ -18,6 +19,7 @@ jobs:
       - name: Print environment variables
         run: | 
           echo "ISSUER_URI: ${{ env.OAUTH_ISSUER_URI }}"
+          echo "AUDIENCE: ${{ vars.OAUTH_ISSUER_URI }}"
 
   build-and-deploy:
     runs-on: ubuntu-latest
