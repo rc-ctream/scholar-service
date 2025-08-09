@@ -10,6 +10,7 @@ env:
   CONTAINER_APP_NAME: hello
   RESOURCE_GROUP: Schoolar
   ENV_VAR: ${{ vars.ENV_CONTEXT_VAR }}
+  OAUTH_ISSUER_URI: ${{ vars.OAUTH_ISSUER_URI }}
 
 jobs:
   greeting-job:
@@ -18,7 +19,7 @@ jobs:
     environment: ${{ vars.ENVIRONMENT_STAGE }}
     steps:
       - name: Print environment variables
-        run: | 
+        run: |
           echo "ISSUER_URI: ${{ env.OAUTH_ISSUER_URI }}"
           echo "AUDIENCE: ${{ vars.OAUTH_ISSUER_URI }}"
           echo "variable from shell environment : $ENV_VAR"
