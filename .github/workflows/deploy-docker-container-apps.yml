@@ -9,18 +9,19 @@ env:
   AZURE_CONTAINER_REGISTRY: scholarservice
   CONTAINER_APP_NAME: hello
   RESOURCE_GROUP: Schoolar
+  ENV_VAR: ${{ vars.ENV_CONTEXT_VAR }}
 
 jobs:
   greeting-job:
     runs-on: ubuntu-latest
-    env:
-      OAUTH_ISSUER_URI: ${{vars.OAUTH_ISSUER_URI}}
     name: Welcome to the job
+    environment: ${{ vars.ENVIRONMENT_STAGE }}
     steps:
       - name: Print environment variables
         run: | 
           echo "ISSUER_URI: ${{ env.OAUTH_ISSUER_URI }}"
           echo "AUDIENCE: ${{ vars.OAUTH_ISSUER_URI }}"
+          echo "variable from shell environment : $env_var"
 
   build-and-deploy:
     runs-on: ubuntu-latest
