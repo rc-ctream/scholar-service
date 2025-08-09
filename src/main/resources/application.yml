@@ -5,5 +5,5 @@ spring:
     oauth2:
       resource-server:
         jwt:
-          issuer-uri: ${OAUTH_ISSUER_URI:https://ctream.eu.auth0.com/}
+          issuer-uri: ${OAUTH_ISSUER_URI}
           jwk-set-uri: https://ctream.eu.auth0.com/.well-known/jwks.json
