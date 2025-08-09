@@ -9,11 +9,12 @@ env:
   AZURE_CONTAINER_REGISTRY: scholarservice
   CONTAINER_APP_NAME: hello
   RESOURCE_GROUP: Schoolar
-  OAUTH_ISSUER_URI: ${{vars.OAUTH_ISSUER_URI}}
 
 jobs:
   greeting-job:
     runs-on: ubuntu-latest
+    env:
+      OAUTH_ISSUER_URI: ${{vars.OAUTH_ISSUER_URI}}
     name: Welcome to the job
     steps:
       - name: Print environment variables
