@@ -18,8 +18,8 @@ jobs:
     steps:
       - name: check if environment variables are set
         run: |
-          if [ -z "${env.OAUTH_ISSUER_URI}" ]; then
-           echo "❌ Environment variable MY_REQUIRED_VAR is not set!"
+          if [ -z "$OAUTH_ISSUER_URI" ]; then
+           echo "❌ Environment variable OAUTH_ISSUER_URI is not set!"
            exit 1
           fi
           echo "✅ MY_REQUIRED_VAR is set"
