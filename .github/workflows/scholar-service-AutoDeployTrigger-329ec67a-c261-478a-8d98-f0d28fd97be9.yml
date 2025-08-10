@@ -1,4 +1,4 @@
-name: Trigger auto deployment for scholar-service
+name: Trigger auto deployment for scholar-service (artifact)
 
 # When this action will be executed
 on:

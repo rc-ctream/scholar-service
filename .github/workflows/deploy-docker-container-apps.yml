@@ -1,4 +1,4 @@
-name: Trigger auto deployment for scholar-service
+name: Trigger auto deployment for scholar-service (docker)
 
 on:
   workflow_dispatch:
