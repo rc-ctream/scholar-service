@@ -16,7 +16,7 @@ jobs:
   greeting-job:
     runs-on: ubuntu-latest
     name: Welcome to the job
-    environment: ${{ vars.ENVIRONMENT_STAGE }}
+    environment: dev
     steps:
       - name: Print environment variables
         run: |
