@@ -9,29 +9,23 @@ env:
   AZURE_CONTAINER_REGISTRY: scholarservice
   CONTAINER_APP_NAME: hello
   RESOURCE_GROUP: Schoolar
-  OAUTH_ISSUER_URI: ${{ vars.OAUTH_ISSUER_URI }}
+  OAUTH_ISSUER_URI: ${{ secrets.OAUTH_ISSUER_URI }}
 
 jobs:
-  greeting-job-with-environment:
+  validate-environment-variables:
     runs-on: ubuntu-latest
-    name: print (dev-)environment variables
-    environment: dev
+    name: validates if environment variables are set
     steps:
-      - name: Print environment variables
+      - name: check if environment variables are set
         run: |
-          echo "ISSUER_URI_FROM_ENV: ${{ env.OAUTH_ISSUER_URI }}"
-          echo "ISSUER_URI_FROM_VARS: ${{ vars.OAUTH_ISSUER_URI }}"
-
-  greeting-job-without-environment:
-    runs-on: ubuntu-latest
-    name: print (all-)environment variables
-    steps:
-      - name: Print environment variables
-        run: |
-          echo "ISSUER_URI_FROM_ENV: ${{ env.OAUTH_ISSUER_URI }}"
-          echo "ISSUER_URI_FROM_VARS: ${{ vars.OAUTH_ISSUER_URI }}"
+          if [ -z "${env.OAUTH_ISSUER_URI}" ]; then
+           echo "❌ Environment variable MY_REQUIRED_VAR is not set!"
+           exit 1
+          fi
+          echo "✅ MY_REQUIRED_VAR is set"
 
   build-and-deploy:
+    needs: validate-environment-variables
     runs-on: ubuntu-latest
 
     steps:
