@@ -1,0 +1,62 @@
+openapi: 3.0.3
+info:
+  title: CTREAM scholar leads agent API
+  version: 1.0.0
+tags:
+  - name: crm
+    description: 'Leads Agent - RESTful Endpoints'
+security:
+  - bearerAuth: [ ]
+paths:
+  /ctream-crm/api/v1/appointments:
+    post:
+      tags:
+        - crm
+      summary: Creates an appointment
+      operationId: createAppointment
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AppointmentRequest"
+      responses:
+        200:
+          description: Successful operation
+        500:
+          description: Internal error - Any unexpected internal server occurred
+  /ctream-crm/api/v1/leads:
+    post:
+      tags:
+        - crm
+      summary: Creates a single lead
+      operationId: createLead
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeadRequest'
+
+      responses:
+        200:
+          description: Successful operation
+        404:
+          description: Not found
+
+components:
+  schemas:
+    LeadRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+    AppointmentRequest:
+      type: object
+      properties:
+        conversation_id:
+          type: string
+        customer_id:
+          type: string
