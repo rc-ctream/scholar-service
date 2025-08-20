@@ -1,4 +1,4 @@
-name: Trigger auto deployment for scholar-service
+name: Trigger auto deployment for scholar-service (docker)
 
 on:
   workflow_dispatch:
@@ -9,21 +9,23 @@ env:
   AZURE_CONTAINER_REGISTRY: scholarservice
   CONTAINER_APP_NAME: hello
   RESOURCE_GROUP: Schoolar
-  ENV_VAR: ${{ vars.ENV_CONTEXT_VAR }}
-  OAUTH_ISSUER_URI: ${{ vars.OAUTH_ISSUER_URI }}
+  OAUTH_ISSUER_URI: ${{ secrets.OAUTH_ISSUER_URI }}
 
 jobs:
-  greeting-job:
+  validate-environment-variables:
     runs-on: ubuntu-latest
-    name: Welcome to the job
+    name: validates if environment variables are set
     steps:
-      - name: Print environment variables
+      - name: check if environment variables are set
         run: |
-          echo "ISSUER_URI: ${{ env.OAUTH_ISSUER_URI }}"
-          echo "AUDIENCE: ${{ vars.OAUTH_ISSUER_URI }}"
-          echo "variable from shell environment : $ENV_VAR"
+          if [ -z "$OAUTH_ISSUER_URI" ]; then
+           echo "❌ Environment variable OAUTH_ISSUER_URI is not set!"
+           exit 1
+          fi
+          echo "✅ MY_REQUIRED_VAR is set"
 
   build-and-deploy:
+    needs: validate-environment-variables
     runs-on: ubuntu-latest
 
     steps:
@@ -58,6 +60,8 @@ jobs:
           imageToDeploy: ${{ env.AZURE_CONTAINER_REGISTRY }}.azurecr.io/${{ env.CONTAINER_APP_NAME }}:${{ github.sha }}
           resourceGroup: ${{ env.RESOURCE_GROUP }}
           containerAppName: ${{ env.CONTAINER_APP_NAME }}
+          environmentVariables: |
+            OAUTH_ISSUER_URI=${{ env.OAUTH_ISSUER_URI }}        
 
 
 
